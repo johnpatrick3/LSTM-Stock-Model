@@ -48,6 +48,8 @@ headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
 #    case 3:
 #        browser = webdriver.Firefox()
 
+options = webdriver.ChromeOptions()
+options.add_argument("--headless=new")
 browser = webdriver.Chrome()
 browser.get(stock_urls['apple'])
 i = 0
@@ -67,14 +69,13 @@ for elementValue in elements:
     if not ("Dividend" in stock_values or "Stock" in stock_values):
         
         temp_dict["Date"] = datetime.datetime.strptime(elementValue[:12], '%b %d, %Y')
-        temp_dict["Open"]= float(stock_values[0])
+        temp_dict["Open"] = float(stock_values[0])
         parsed_data = pd.concat([parsed_data,pd.DataFrame([temp_dict])], ignore_index=True)
     
 
 parsed_data['LogOpen'] = np.log(parsed_data['Open'])
 parsed_data['DiffLogOpen'] = parsed_data['LogOpen'].diff(1)
-#[0] * len(parsed_data)
-#parsed_data['LogGain'][1:] = [parsed_data['LogOpen'][i] - parsed_data['LogOpen'][i-1] for i in range(1,len(parsed_data))]
+
 
 print(parsed_data)
 
