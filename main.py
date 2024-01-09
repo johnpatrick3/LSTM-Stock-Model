@@ -18,39 +18,11 @@ stock_urls = {'apple': 'https://finance.yahoo.com/quote/AAPL/history?period1=153
               'amazon': 'https://finance.yahoo.com/quote/AMZN/history?period1=1536278400&period2=1694044800&interval=1d&filter=history&frequency=1d&includeAdjustedClose=true'
 }
 
-headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
-           AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36'}
-
-#viable_browser_options = {1: "Chrome",
-#                          2: "Safari",
-#                          3: "Firefox"}
-
-#while True:
-#    user_browser_selection = input("Enter the number corresponding to your browser of choice: (1) Chrome, (2) Safari, (3) Firefox")
-#
-#    try:
-#        user_browser_selection = int(user_browser_selection)
-#
-#    except ValueError:
-#        print("Value entered is not a valid input option")
-#    
-#    if user_browser_selection not in viable_browser_options.keys():
-#        raise Exception("User did not enter the number corresponding to one of the viable browser options (1, 2, or 3) ")
-#        continue
-#    else:
-#        break
-#
-
-#match user_browser_selection:
-#    case 1:
-#        browser = webdriver.Chrome()
-#    case 2:
-#        browser = webdriver.Safari()
-#    case 3:
-#        browser = webdriver.Firefox()
+headers = "Mozilla/5.0 (Linux; Android 11; 100011886A Build/RP1A.200720.011) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.69 Safari/537.36"
 
 options = webdriver.ChromeOptions()
 options.add_argument("--headless=new")
+options.add_argument(f'user-agent={headers}')
 browser = webdriver.Chrome(options=options)
 browser.get(stock_urls['apple'])
 i = 0
