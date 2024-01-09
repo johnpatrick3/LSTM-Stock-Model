@@ -50,7 +50,7 @@ headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
 
 options = webdriver.ChromeOptions()
 options.add_argument("--headless=new")
-browser = webdriver.Chrome()
+browser = webdriver.Chrome(options=options)
 browser.get(stock_urls['apple'])
 i = 0
 while i < 100:
@@ -76,8 +76,28 @@ for elementValue in elements:
 parsed_data['LogOpen'] = np.log(parsed_data['Open'])
 parsed_data['DiffLogOpen'] = parsed_data['LogOpen'].diff(1)
 
+train = parsed_data.iloc[:901]
+test = parsed_data.iloc[901:]
 
-print(parsed_data)
+train_period = 900
+test_period = len(parsed_data) - train_period
+print(f"test_period: {test_period}")
+
+train_indicator = (parsed_data.index <= train.index[-1])
+test_indicator = (parsed_data.index > train.index[-1])
+
+series = parsed_data['DiffLogOpen'].dropna().to_numpy()
+
+Tx = 100
+Ty = 1
+X = np.array([series[t:t+Tx] for t in range(len(series) - Tx-Ty+1)]).reshape(-1, Tx, 1)
+Y = np.array([series[t+Tx+Ty-1] for t in range(len(series) - Tx-Ty+1)]).reshape(-1, Ty)
+N = len(X)
+
+Xtrain, Ytrain = X[:-test_period], Y[:-test_period]
+Xtest, Ytest = X[-test_period:], Y[-test_period:]
+
+print(f"Xtrain.shape: {Xtrain.shape}, Xtest.shape: {Xtest.shape}, series.shape: {series.shape}, X.shape: {X.shape}")
 
 
 
@@ -87,21 +107,5 @@ print(parsed_data)
 
 
 
-
-
-
-#for i in stock_urls.keys():
-#html_text = (requests.get(stock_urls['apple'],headers=headers)).text
-saved_values = []
-
-#with open("C:\\saved_webpage.html") as fp:
-#    soup = BeautifulSoup(fp, 'html.parser')
-#    stock_open = soup.find()
-#    stock_close = 
-#    stock_date = 
-#    company = 
-#    daily_stock_values = [company, stock_date, stock_open, stock_close]
-
-#    saved_values.append(daily_stock_values)
 
 
