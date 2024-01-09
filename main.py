@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 import time
 import numpy as np
 import datetime
+from tensorflow import keras
 
 stock_urls = {'apple': 'https://finance.yahoo.com/quote/AAPL/history?period1=1536192000&period2=1693958400&interval=1d&filter=history&frequency=1d&includeAdjustedClose=true',
               'microsoft': 'https://finance.yahoo.com/quote/MSFT/history?period1=1536278400&period2=1694044800&interval=1d&filter=history&frequency=1d&includeAdjustedClose=true',
@@ -99,7 +100,7 @@ Xtest, Ytest = X[-test_period:], Y[-test_period:]
 
 print(f"Xtrain.shape: {Xtrain.shape}, Xtest.shape: {Xtest.shape}, series.shape: {series.shape}, X.shape: {X.shape}")
 
-
+#Code Section below is the creation of the LSTM model using
 
 
 
