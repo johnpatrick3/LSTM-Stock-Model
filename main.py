@@ -67,11 +67,11 @@ test_indicator = (stock_values.index > train.index[-1])
 #print(f'train_indicator: {train_indicator}')
 
 #series = stock_values.parsed_data['DiffLogOpen'].dropna().to_numpy()
-series = stock_values['DiffLogOpen'].dropna().to_numpy()
+series = stock_values['DiffLogOpen'][0:2401].dropna().to_numpy()
 print(series.shape)
+print(series[0:5])
 
-
-Tx = 100 #2
+Tx = 150 #2
 Ty = 50 #2
 X = np.array([series[t:t+Tx] for t in range(len(series) - Tx-Ty+1)]).reshape(-1, Tx, 1) #2
 Y = np.array([series[t+Tx:t+Tx+Ty] for t in range(len(series) - Tx-Ty+1)]).reshape(-1, Ty) #2
@@ -82,9 +82,9 @@ print(f'X: {X.shape}, Y: {Y.shape}, N: {N}')
 #print(f'Y: {Y}')
 
 Xtrain, Ytrain = X[:-1], Y[:-1]
-Xtest, Ytest = X[-1], Y[-1:]
+Xtest, Ytest = X[-1:], Y[-1:]
 
-print(f"Xtrain.shape: {Xtrain.shape}, Xtest.shape: {Xtest.shape}, series.shape: {series.shape}, X.shape: {X.shape}")
+print(f"Xtrain.shape: {Xtrain.shape}, Xtest.shape: {Xtest.shape}, series.shape: {series.shape}, Ytrain.shape: {Ytrain.shape}")
 
 #Code Section below is the creation of the LSTM model using
 num_features = 1
@@ -102,19 +102,20 @@ outputs = keras.layers.Dense(Ty)(x)
 model = keras.Model(inputs,outputs)
 model.summary()
 
-callbacks = [keras.callbacks.ModelCheckpoint("LSTM_multi_output.keras",save_best_only=True)]
+callbacks = [keras.callbacks.ModelCheckpoint("LSTM_Multi_output.keras",save_best_only=True)]
 
 model.compile(optimizer='rmsprop', loss='mse', metrics=['mae'])
-
+print(Xtrain[0].shape)
+print(Ytrain[0].shape)
 history = model.fit(Xtrain, Ytrain, epochs=20, validation_data=(Xtest,Ytest), callbacks=callbacks)
 
-model = keras.models.load_model("LSTM_multi_output.keras")
+model = keras.models.load_model("LSTM_Multi_output.keras")
 train_predictions = model.predict(Xtrain)
 test_predictions = model.predict(Xtest)
 
 
-print(test_predictions[-1:])
-print(stock_values.tail())
+#print(test_predictions[-1:])
+#print(stock_values.tail())
 
 #if __name__ == '__main__':
 #    model = keras.models.load_model("LSTM_output.keras")
