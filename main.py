@@ -1,15 +1,17 @@
 import requests
 import pandas as pd
 from selenium.webdriver.common.by import By
-#from utils.data_collector import DataParser
+from utils.data_collector import DataParser
 import time
 import numpy as np
 import datetime
 import tensorflow as tf
 import keras
-#from utils import browser, stock_urls
+from utils import browser, stock_urls
 
-# Section 1
+# Section 1 - Yahoo Finance Web Scraping for Data Collection
+##############################################################
+#
 # The below code section is meant to accomplish the following tasks:
 #       1) Run a GET API call on the Yahoo Finance website for the historical apple stock information
 #       2) Continuously scroll down on webpage so that the complete financial stock information table can be loaded onto the webpage.
@@ -33,7 +35,7 @@ import keras
 #stock_values = DataParser(elements) #1
 #stock_values.parse_data() #2
 #stock_values.format_data() #3
-#stock_values.parsed_data.to_csv("C:/Users/johnp/OneDrive/Documents/parsed_stock_data.csv")
+#stock_values.parsed_data.to_csv("C:/Users/johnp/OneDrive/Documents/AAPL.csv")
 stock_values = pd.read_csv("C:/Users/johnp/OneDrive/Documents/AAPL.csv")
 stock_values['LogOpen'] = np.log(stock_values['Open'])
 stock_values['DiffLogOpen'] = stock_values['LogOpen'].diff(1)
