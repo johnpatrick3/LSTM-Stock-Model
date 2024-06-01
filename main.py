@@ -7,7 +7,7 @@ import numpy as np
 #import datetime
 import tensorflow as tf
 import keras
-#from utils import browser, stock_urls
+from utils import browser, stock_urls
 
 
 stock_values = pd.read_csv("C:/Users/johnp/OneDrive/Documents/AAPL_test.csv")
