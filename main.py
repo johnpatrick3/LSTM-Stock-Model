@@ -66,12 +66,12 @@ outputs = keras.layers.Dense(Ty)(x)
 model = keras.Model(inputs,outputs)
 model.summary()
 
-callbacks = [keras.callbacks.ModelCheckpoint("LSTM_Multi_output_v3.keras",save_best_only=True)]
+callbacks = [keras.callbacks.ModelCheckpoint("LSTM_Multi_output.keras",save_best_only=True)]
 
 model.compile(optimizer='rmsprop', loss='mse', metrics=['mae'])
 history = model.fit(Xtrain, Ytrain, epochs=20, validation_data=(Xtest,Ytest), callbacks=callbacks)
 
-model = keras.models.load_model("LSTM_Multi_output_v3.keras")
+model = keras.models.load_model("LSTM_Multi_output.keras")
 train_predictions = model.predict(Xtrain)
 test_predictions = model.predict(Xtest)
 
@@ -79,7 +79,7 @@ test_predictions = model.predict(Xtest)
 #print(test_predictions.shape)
 
 print("predicted 50 day log return from last date: {}".format(np.sum(test_predictions)))
-print("actual 50 day log return from last date: {}".format(sum(stock_values['DiffLogOpen'][-50:])))
+print("actual 50 day log return from last date: {}".format(np.sum(Ytest)))
 
     
     
